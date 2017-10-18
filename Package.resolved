@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ProtocolBuffers",
+        "repositoryURL": "https://github.com/alexeyxo/protobuf-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "c2cb9f4f85b8de867638343fe8b85f6df13b477b",
+          "version": "3.0.26"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
