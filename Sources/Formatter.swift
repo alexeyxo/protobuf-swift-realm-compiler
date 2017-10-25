@@ -30,11 +30,31 @@ internal extension String {
         return returned
     }
     
+    fileprivate func tempProtoCamelCase() -> String {
+        var index = 0
+        var returned = ""
+        self.forEach({
+            if index == 0 {
+                let char = String($0).uppercased()
+                returned += char
+            } else {
+                let prev = self.element(index-1)
+                if prev.lowercased() != prev {
+                    returned += String($0).lowercased()
+                } else {
+                    returned += String($0)
+                }
+            }
+            index += 1
+        })
+        return returned
+    }
+    
     func capitalizedCamelCase(separator:String = ".") -> String {
         let components = self.components(separatedBy: CharacterSet.alphanumerics.inverted).filter({ $0 != ""})
         let separator = self.components(separatedBy: ".").count > 1 ? separator : ""
         let returned = components.map({
-            return $0.protoCamelCase()
+            return $0.tempProtoCamelCase()
         }).joined(separator: separator)
         guard String(describing:returned.first) != "." else {
             return String(describing:returned.dropFirst())
@@ -63,7 +83,7 @@ internal extension String {
         let components = self.components(separatedBy: CharacterSet.alphanumerics.inverted).filter({ $0 != ""})
         let separator = self.components(separatedBy: ".").count > 1 ? "." : ""
         let returned = components.map({
-            return $0.protoCamelCase()
+            return $0.tempProtoCamelCase()
         }).joined(separator: separator)
         return returned
     }
