@@ -24,10 +24,11 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
     
     func generateSource() {
         if shouldGenerate() {
-            self.writer.write("class ", self.className(), ":Object {")
+            self.writer.write("\(AccessControl(self.file.descriptor)) class ", self.className(), ":Object {")
             self.writer.indent()
-            self.generateTypeAliases()
-            
+            if self.additionalClassName == nil {
+                self.generateTypeAliases()
+            }
             var indexedProperty:[String] = []
             var primaryKey:String? = nil
             self.descriptor.field.sorted(by: { return $0.0.number < $0.1.number }).forEach({
@@ -73,11 +74,11 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
         
         self.descriptor.nestedType.forEach({
             let generator = GeneratorMessage(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self)
-            self.writer.write("typealias ", generator.aliasName(), " = ", generator.className())
+            self.writer.write(AccessControl(self.file.descriptor)," typealias ", generator.aliasName(), " = ", generator.className())
         })
         self.descriptor.enumType.forEach({
             let generator = GeneratorEnum(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self)
-            self.writer.write("typealias ", generator.aliasName(), " = ", generator.className())
+            self.writer.write(AccessControl(self.file.descriptor)," typealias ", generator.aliasName(), " = ", generator.className())
         })
         
         if self.descriptor.nestedType.count > 0 || self.descriptor.enumType.count > 0 {
@@ -141,7 +142,11 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
         if self.writer.file.hasPackage {
             fullName = self.writer.file.package + "." + fullName
         }
-        return fullName.capitalizedCamelCase()
+        let returned = fullName.oldCapitalizedCamelCase().components(separatedBy: ".")
+        if additionalClassName != nil {
+            return returned.dropLast().joined(separator: ".")
+        }
+        return returned.joined(separator: ".")
     }
     
     func aliasName() -> String {
@@ -158,7 +163,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
     
     static func generateIndexedProperty(_ writer:CodeWriter, property:[String]) {
         guard property.count > 0 else {return}
-        writer.write("override class func indexedProperties() -> [String] {")
+        writer.write("\(AccessControl(writer.file)) override class func indexedProperties() -> [String] {")
         writer.indent()
         writer.write("return [\"\(property.joined(separator: ","))\"]")
         writer.outdent()
@@ -167,7 +172,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
     
     static func generatePrimaryKey(_ writer:CodeWriter, property:String?) {
         guard let prop = property else {return}
-        writer.write("override class func primaryKey() -> String? {")
+        writer.write("\(AccessControl(writer.file)) override class func primaryKey() -> String? {")
         writer.indent()
         writer.write("return \"\(prop)\"")
         writer.outdent()
@@ -179,22 +184,29 @@ extension GeneratorMessage {
     func generateExtensions() {
         if shouldGenerate() {
             self.generateProtoToRealmMethod()
+            if let addClass = AdditionalClassName(self.descriptor), self.additionalClassName == nil {
+                let additional = GeneratorMessage(file: self.file, descriptor: self.descriptor, writer: self.writer, parentGenerator: self)
+                additional.additionalClassName = addClass
+                additional.generateExtensions()
+            }
         }
-        self.descriptor.nestedType.forEach({
-            GeneratorMessage(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self).generateExtensions()
-        })
-        self.descriptor.enumType.forEach({
-            GeneratorEnum(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self).generateExtensions()
-        })
+        if self.additionalClassName == nil {
+            self.descriptor.nestedType.forEach({
+                GeneratorMessage(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self).generateExtensions()
+            })
+            self.descriptor.enumType.forEach({
+                GeneratorEnum(file: self.file, descriptor: $0, writer: self.writer, parentGenerator: self).generateExtensions()
+            })
+        }
     }
     fileprivate func generateProtoToRealmMethod() {
         self.writer.write("extension \(self.className()):ProtoRealm {")
         self.writer.indent()
-        self.writer.write("typealias PBType = \(self.protoClassName())")
-        self.writer.write("typealias RMObject = \(self.className())")
-        self.writer.write("typealias RepresentationType = Dictionary<String,Any>")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias PBType = \(self.protoClassName())")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias RMObject = \(self.className())")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias RepresentationType = Dictionary<String,Any>")
         
-        self.writer.write("static func map(_ proto: \(self.protoClassName())) -> \((self.className())) {")
+        self.writer.write("\(AccessControl(self.file.descriptor)) static func map(_ proto: \(self.protoClassName())) -> \((self.className())) {")
         self.writer.indent()
         self.writer.write("let rmModel = \(self.className())()")
         self.descriptor.field.forEach({
@@ -209,9 +221,9 @@ extension GeneratorMessage {
         
     }
     func generateProtobufExtensions() {
-        self.writer.write("func protobuf() throws -> PBType {")
+        self.writer.write("\(AccessControl(self.file.descriptor)) func protobuf() throws -> \(self.protoClassName()) {")
         self.writer.indent()
-        self.writer.write("let proto = PBType.BuilderType()")
+        self.writer.write("let proto = \(self.protoClassName()).Builder()")
         if IsMapEntry(self.descriptor) {
             self.writer.write("proto.key = self.value")
             self.writer.write("return try proto.build()")

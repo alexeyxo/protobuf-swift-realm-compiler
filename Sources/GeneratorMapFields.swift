@@ -16,22 +16,26 @@ final class GeneratorMapFields: DescriptorGenerator<Google.Protobuf.FieldDescrip
         self.writer.write("\(self.dynamicTypes()) " + self.descriptor.name.camelCase() + ":" + self.typesCasting() + self.defaultValue())
     }
     func generateExtensions() {
-        self.writer.write("rmModel.\(self.descriptor.name.camelCase()) = proto.\(self.descriptor.name.camelCase())")
+        self.writer.write("rmModel.\(self.descriptor.name.camelCase()) = proto.\(self.descriptor.name.oldCamelCase())")
     }
     func generateExtensionsMaps() {
-        self.writer.write("let \(self.descriptor.name.camelCase())List = proto.\(self.descriptor.name.camelCase()).map ({ key, value in")
+        self.writer.write("let \(self.descriptor.name.camelCase())List = proto.\(self.descriptor.name.oldCamelCase()).map ({ key, value -> \(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR)) in")
         self.writer.indent()
-        self.writer.write("let obj\(self.descriptor.typeName.underscoreCapitalizedCamelCase()) = \(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR))()")
-        self.writer.write("obj\(self.descriptor.typeName.underscoreCapitalizedCamelCase()).key = key")
-        self.writer.write("obj\(self.descriptor.typeName.underscoreCapitalizedCamelCase()).value = value")
-        self.writer.write("return obj\(self.descriptor.typeName.underscoreCapitalizedCamelCase())")
+        self.writer.write("let obj\(self.descriptor.typeName.oldUnderscoreCapitalizedCamelCase()) = \(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR))()")
+        self.writer.write("obj\(self.descriptor.typeName.oldUnderscoreCapitalizedCamelCase()).key = key")
+        self.writer.write("obj\(self.descriptor.typeName.oldUnderscoreCapitalizedCamelCase()).value = value")
+        self.writer.write("return obj\(self.descriptor.typeName.oldUnderscoreCapitalizedCamelCase())")
         self.writer.outdent()
         self.writer.write("})")
         self.writer.write("rmModel.\(self.descriptor.name.camelCase()).append(objectsIn:\(self.descriptor.name.camelCase())List)")
     }
     
     func generateProtobufExtensions() {
-        
+        self.writer.write("self.\(self.descriptor.name.camelCase()).forEach({ value in")
+        self.writer.indent()
+        self.writer.write("proto.\(self.descriptor.name.oldCamelCase())[value.key] = value.value")
+        self.writer.outdent()
+        self.writer.write("})")
     }
     
     func dynamicTypes() -> String {

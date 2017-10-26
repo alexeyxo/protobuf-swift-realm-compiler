@@ -54,6 +54,17 @@ internal extension String {
         let components = self.components(separatedBy: CharacterSet.alphanumerics.inverted).filter({ $0 != ""})
         let separator = self.components(separatedBy: ".").count > 1 ? separator : ""
         let returned = components.map({
+            return $0.protoCamelCase()
+        }).joined(separator: separator)
+        guard String(describing:returned.first) != "." else {
+            return String(describing:returned.dropFirst())
+        }
+        return returned
+    }
+    func oldCapitalizedCamelCase(separator:String = ".") -> String {
+        let components = self.components(separatedBy: CharacterSet.alphanumerics.inverted).filter({ $0 != ""})
+        let separator = self.components(separatedBy: ".").count > 1 ? separator : ""
+        let returned = components.map({
             return $0.tempProtoCamelCase()
         }).joined(separator: separator)
         guard String(describing:returned.first) != "." else {
@@ -70,8 +81,25 @@ internal extension String {
         return firstStr + newStr
     }
     
+    func oldUnderscoreCapitalizedCamelCase(separator:String = "") -> String {
+        let returned = self.oldCapitalizedCamelCase(separator: separator)
+        let first = returned.first!
+        let firstStr = String(describing:first).uppercased()
+        let newStr = returned.dropFirst()
+        return firstStr + newStr
+    }
+    
     func camelCase() -> String {
         let str = self.capitalizedCamelCase().components(separatedBy: ".").joined()
+        guard let first = str.first else {
+            return ""
+        }
+        let newStr = str.dropFirst()
+        return String(describing:first).lowercased() + String(describing:newStr)
+    }
+    
+    func oldCamelCase() -> String {
+        let str = self.oldCapitalizedCamelCase().components(separatedBy: ".").joined()
         guard let first = str.first else {
             return ""
         }

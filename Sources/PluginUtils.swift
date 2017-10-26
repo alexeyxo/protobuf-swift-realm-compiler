@@ -99,6 +99,17 @@ func IsMapField(_ desc:Google.Protobuf.FieldDescriptorProto, parentDesc:Google.P
     return filtered.count == 1
 }
 
+
+func AccessControl(_ desc:Google.Protobuf.FileDescriptorProto) -> String {
+    if let options = GetOptions(desc) {
+        switch options.entitiesAccessControl {
+        case .internalEntities: return "internal"
+        case .publicEntities: return "public"
+        }
+    }
+    return "public"
+}
+
 func IsOneOfField(_ desc:Google.Protobuf.FieldDescriptorProto) -> Bool {
     return desc.hasOneofIndex
 }

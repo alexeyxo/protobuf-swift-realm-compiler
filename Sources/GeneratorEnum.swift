@@ -20,9 +20,11 @@ final class GeneratorEnum: ThreeDescriptorGenerator<Google.Protobuf.EnumDescript
         fatalError("init(descriptor:writer:) has not been implemented")
     }
     
+    var additionalClassName:String?
+    
     func generateSource() {
         if shouldGenerate() {
-            self.writer.write("class ", self.className(), ":Object {")
+            self.writer.write("\(AccessControl(self.file.descriptor)) class ", self.className(), ":Object {")
             self.writer.indent()
             self.writer.write("dynamic var rawValue:String = \"\"")
             GeneratorMessage.generatePrimaryKey(self.writer, property: "rawValue")
@@ -58,7 +60,7 @@ final class GeneratorEnum: ThreeDescriptorGenerator<Google.Protobuf.EnumDescript
         if self.writer.file.hasPackage {
             fullName = self.writer.file.package + "." + fullName
         }
-        return fullName.capitalizedCamelCase()
+        return fullName.oldCapitalizedCamelCase()
     }
     
     func aliasName() -> String {
@@ -97,10 +99,10 @@ extension GeneratorEnum {
     fileprivate func generateProtoToRealmMethod() {
         self.writer.write("extension \(self.className()):ProtoRealm {")
         self.writer.indent()
-        self.writer.write("typealias PBType = \(self.protoClassName())")
-        self.writer.write("typealias RMObject = \(self.className())")
-        self.writer.write("typealias RepresentationType = String")
-        self.writer.write("static func map(_ proto: \(self.protoClassName())) -> \(self.className()) {")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias PBType = \(self.protoClassName())")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias RMObject = \(self.className())")
+        self.writer.write("\(AccessControl(self.file.descriptor)) typealias RepresentationType = String")
+        self.writer.write("\(AccessControl(self.file.descriptor)) static func map(_ proto: \(self.protoClassName())) -> \(self.className()) {")
         self.writer.indent()
         self.writer.write("let rmModel = \(self.className())()")
         self.writer.write("rmModel.rawValue = proto.toString()")
@@ -114,7 +116,7 @@ extension GeneratorEnum {
     }
     
     fileprivate func generateRepresentExtension() {
-        self.writer.write("func protobuf() throws -> PBType {")
+        self.writer.write("\(AccessControl(self.file.descriptor)) func protobuf() throws -> \(self.protoClassName()) {")
         self.writer.indent()
         self.writer.write("return try \(self.protoClassName()).fromString(self.rawValue)")
         self.writer.outdent()

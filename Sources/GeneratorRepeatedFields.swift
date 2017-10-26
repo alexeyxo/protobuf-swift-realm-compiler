@@ -25,7 +25,7 @@ final class GeneratorRepeatedFields: DescriptorGenerator<Google.Protobuf.FieldDe
             case .typeGroup: fallthrough
             case .typeEnum: fallthrough
             case .typeMessage:
-                return "rmModel.\(self.descriptor.name.camelCase()).append(objectsIn:\(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR)).map(proto.\(self.descriptor.name.camelCase())))"
+                return "rmModel.\(self.descriptor.name.camelCase()).append(objectsIn:\(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR)).map(proto.\(self.descriptor.name.oldCamelCase())))"
             default: return ""
             }
         }
@@ -39,12 +39,12 @@ final class GeneratorRepeatedFields: DescriptorGenerator<Google.Protobuf.FieldDe
             case .typeGroup: fallthrough
             case .typeEnum: fallthrough
             case .typeMessage:
-                return "rmModel.\(self.descriptor.name.camelCase()).append(objectsIn:\(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR)).map(proto.\(self.descriptor.name.camelCase())))"
+                return "rmModel.\(self.descriptor.name.camelCase()).append(objectsIn:\(self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR)).map(proto.\(self.descriptor.name.oldCamelCase())))"
             default: return ""
             }
         }
         if extensionRepeated() != "" {
-            self.writer.write("proto.\(self.descriptor.name.camelCase()) += try self.\(self.descriptor.name.camelCase()).map({ value in ")
+            self.writer.write("proto.\(self.descriptor.name.camelCase()) += try self.\(self.descriptor.name.oldCamelCase()).map({ value in ")
             self.writer.indent()
             self.writer.write("return try value.protobuf()")
             self.writer.outdent()
