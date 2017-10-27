@@ -114,6 +114,13 @@ func IsOneOfField(_ desc:Google.Protobuf.FieldDescriptorProto) -> Bool {
     return desc.hasOneofIndex
 }
 
+func GetLinkedObjects(_ desc:Google.Protobuf.DescriptorProto) -> [Google.Protobuf.LinkedObject] {
+    if let options = GetOptions(desc), options.linkedObjects.count > 0 {
+        return options.linkedObjects
+    }
+    return []
+}
+
 func AdditionalClassName(_ desc:Google.Protobuf.DescriptorProto) -> String? {
     if let options = GetOptions(desc) {
         if options.hasAdditionalClassName, options.additionalClassName != nil {

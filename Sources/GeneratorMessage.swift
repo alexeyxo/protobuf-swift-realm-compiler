@@ -41,6 +41,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
                     primaryKey = $0.name.camelCase()
                 }
             })
+            self.generateLinkedObjects()
             self.writer.write()
             GeneratorMessage.generateIndexedProperty(self.writer, property: indexedProperty)
             GeneratorMessage.generatePrimaryKey(self.writer, property: primaryKey)
@@ -56,6 +57,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
                 additional.additionalClassName = addClass
                 additional.generateSource()
             }
+            
         }
         
         
@@ -83,6 +85,15 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
         
         if self.descriptor.nestedType.count > 0 || self.descriptor.enumType.count > 0 {
             self.writer.write()
+        }
+    }
+    
+    func generateLinkedObjects() {
+        if GetLinkedObjects(self.descriptor).count > 0 {
+            let objects = GetLinkedObjects(self.descriptor)
+            objects.forEach({
+                self.writer.write("let \($0.fieldName.camelCase()) = LinkingObjects(fromType: \($0.fromType.capitalizedCamelCase(separator: STATIC_SEPARATOR)).self, property:\"\($0.propertyName.camelCase())\")")
+            })
         }
     }
     
