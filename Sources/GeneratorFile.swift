@@ -7,7 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
-
+import ProtobufGeneratorUtils
 final class GeneratorFile:DescriptorGenerator<Google.Protobuf.FileDescriptorProto>, CheckGenerateFile {
     
     

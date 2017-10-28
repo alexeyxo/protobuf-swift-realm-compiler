@@ -7,7 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
-
+import ProtobufGeneratorUtils
 final class GeneratorEnum: ThreeDescriptorGenerator<Google.Protobuf.EnumDescriptorProto, Google.Protobuf.DescriptorProto> {
     var file:GeneratorFile
     init(file:GeneratorFile, descriptor: Google.Protobuf.EnumDescriptorProto, writer: CodeWriter, parentGenerator:GeneratorMessage? = nil) {

@@ -7,6 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
+import ProtobufGeneratorUtils
 
 final class GeneratorRepeatedFields: DescriptorGenerator<Google.Protobuf.FieldDescriptorProto>, CodeGeneratorMethods, FieldsGeneratorMethods {
     

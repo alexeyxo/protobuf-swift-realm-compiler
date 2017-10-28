@@ -7,7 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
-
+import ProtobufGeneratorUtils
 final class GeneratorFields: ThreeDescriptorGenerator<Google.Protobuf.FieldDescriptorProto, Google.Protobuf.DescriptorProto>, CodeGeneratorMethods {
     var file:GeneratorFile
     init(file:GeneratorFile, descriptor: Google.Protobuf.FieldDescriptorProto, writer: CodeWriter, parentGenerator:GeneratorMessage) {

@@ -7,6 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
+import ProtobufGeneratorUtils
 
 class GeneratorOneof: ThreeDescriptorGenerator<Google.Protobuf.OneofDescriptorProto, Google.Protobuf.DescriptorProto> {
     var file:GeneratorFile

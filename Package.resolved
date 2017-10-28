@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "ProtobufGeneratorUtils",
+        "repositoryURL": "https://github.com/alexeyxo/protobuf-swift-generator-utils.git",
+        "state": {
+          "branch": null,
+          "revision": "546ff0032ef9d09eb88a46dee4a1f88ca30e8308",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "ProtocolBuffers",
         "repositoryURL": "https://github.com/alexeyxo/protobuf-swift.git",
         "state": {

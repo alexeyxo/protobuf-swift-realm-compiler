@@ -7,6 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
+import ProtobufGeneratorUtils
 
 final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.DescriptorProto, Google.Protobuf.DescriptorProto>, CodeGeneratorMethods {
     var file:GeneratorFile
@@ -52,7 +53,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
             }
             self.writer.outdent()
             self.writer.write("}")
-            if let addClass = AdditionalClassName(self.descriptor), self.additionalClassName == nil {
+            if let addClass = AdditionalSchemeName(self.descriptor), self.additionalClassName == nil {
                 let additional = GeneratorMessage(file: self.file, descriptor: self.descriptor, writer: self.writer, parentGenerator: self)
                 additional.additionalClassName = addClass
                 additional.generateSource()
@@ -195,7 +196,7 @@ extension GeneratorMessage {
     func generateExtensions() {
         if shouldGenerate() {
             self.generateProtoToRealmMethod()
-            if let addClass = AdditionalClassName(self.descriptor), self.additionalClassName == nil {
+            if let addClass = AdditionalSchemeName(self.descriptor), self.additionalClassName == nil {
                 let additional = GeneratorMessage(file: self.file, descriptor: self.descriptor, writer: self.writer, parentGenerator: self)
                 additional.additionalClassName = addClass
                 additional.generateExtensions()

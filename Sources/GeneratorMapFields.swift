@@ -7,7 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
-
+import ProtobufGeneratorUtils
 final class GeneratorMapFields: DescriptorGenerator<Google.Protobuf.FieldDescriptorProto>, CodeGeneratorMethods, FieldsGeneratorMethods {
     required init(descriptor: GeneratedDescriptorType, writer: CodeWriter) {
         super.init(descriptor: descriptor, writer: writer)

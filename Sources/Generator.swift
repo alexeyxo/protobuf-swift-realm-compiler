@@ -7,7 +7,7 @@
 
 import Foundation
 import ProtocolBuffers
-
+import ProtobufGeneratorUtils
 public protocol CodeGeneratorDescriptor {
     associatedtype GeneratedDescriptorType:GeneratedMessageProtocol
 }
@@ -46,45 +46,6 @@ let STATIC_SEPARATOR = "_"
 
 extension CodeGenerator {
     func generateSource() {
-    }
-}
-
-public final class CodeWriter {
-    let file:Google.Protobuf.FileDescriptorProto
-    fileprivate var suffix = ""
-    init(file:Google.Protobuf.FileDescriptorProto, suffix:String = "") {
-        self.file = file
-        self.suffix = suffix
-    }
-    var outputFile:String {
-        var fileName = ""
-        if self.file.hasPackage {
-            fileName = self.file.package.capitalizedCamelCase() + "."
-        }
-        fileName += self.file.name.capitalizedCamelCase().replacingOccurrences(of: ".Proto", with: "")
-        return fileName + self.suffix + ".swift"
-    }
-    var summaryIndent:String = ""
-    func indent() {
-        summaryIndent += "\t"
-    }
-    func outdent() {
-        summaryIndent.removeLast()
-    }
-    var contentScalars = String.UnicodeScalarView()
-    public var content: String {
-        return String(contentScalars)
-    }
-    func write(_ str:String..., newLine:Bool = true) {
-        var data = ""
-        if str.count > 0 {
-            data =  str.joined()
-        }
-        contentScalars.append(contentsOf: summaryIndent.unicodeScalars)
-        contentScalars.append(contentsOf: data.unicodeScalars)
-        if newLine {
-            contentScalars.append(contentsOf: "\n".unicodeScalars)
-        }
     }
 }
 

@@ -7,6 +7,8 @@
 
 import Foundation
 import ProtocolBuffers
+import ProtobufGeneratorUtils
+
 final class GeneratorOptionalFields: DescriptorGenerator<Google.Protobuf.FieldDescriptorProto>, CodeGeneratorMethods, FieldsGeneratorMethods {
     
     required init(descriptor: GeneratedDescriptorType, writer: CodeWriter) {
