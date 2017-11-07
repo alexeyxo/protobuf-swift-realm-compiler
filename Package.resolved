@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/alexeyxo/protobuf-swift-generator-utils.git",
         "state": {
           "branch": null,
-          "revision": "546ff0032ef9d09eb88a46dee4a1f88ca30e8308",
-          "version": "1.0.0"
+          "revision": "b307a30a5a58f6fe09a32a9161a12d1c877b16b6",
+          "version": "1.1.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/alexeyxo/protobuf-swift.git",
         "state": {
           "branch": null,
-          "revision": "3fb3ea3d4871ce61cc93e43f2137f63560399162",
-          "version": "3.0.27"
+          "revision": "c9300e10e63ccc4d0ca74509a4735aa46c3233ae",
+          "version": "4.0.0"
         }
       }
     ]

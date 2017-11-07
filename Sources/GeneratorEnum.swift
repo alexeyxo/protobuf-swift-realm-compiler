@@ -26,7 +26,7 @@ final class GeneratorEnum: ThreeDescriptorGenerator<Google.Protobuf.EnumDescript
         if shouldGenerate() {
             self.writer.write("\(AccessControl(self.file.descriptor)) class ", self.className(), ":Object {")
             self.writer.indent()
-            self.writer.write("dynamic var rawValue:String = \"\"")
+            self.writer.write("@objc dynamic var rawValue:String = \"\"")
             GeneratorMessage.generatePrimaryKey(self.writer, property: "rawValue")
             GeneratorMessage.generateIndexedProperty(self.writer, property: ["rawValue"])
             self.writer.outdent()

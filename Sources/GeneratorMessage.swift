@@ -32,7 +32,7 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
             }
             var indexedProperty:[String] = []
             var primaryKey:String? = nil
-            self.descriptor.field.sorted(by: { return $0.0.number < $0.1.number }).forEach({
+            self.descriptor.field.sorted(by: { elem, elem2  in return elem.number < elem2.number }).forEach({
                 let fieldGenerator = GeneratorFields(file: self.file, descriptor: $0, writer: self.writer, parentGenerator:self)
                 fieldGenerator.generateSource()
                 if IsIndexedProperty($0) {

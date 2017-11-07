@@ -253,13 +253,13 @@ final class GeneratorOptionalFields: DescriptorGenerator<Google.Protobuf.FieldDe
         case .typeDouble: return "let"
         case .typeFloat:  return "let"
         case .typeBool: return "let"
-        case .typeString: return "dynamic var"
+        case .typeString: return "@objc dynamic var"
             
         case .typeGroup: fallthrough
         case .typeEnum: fallthrough
-        case .typeMessage: return "dynamic var"
+        case .typeMessage: return "@objc dynamic var"
             
-        case .typeBytes: return "dynamic var"
+        case .typeBytes: return "@objc dynamic var"
         case .typeInt64: fallthrough
         case .typeUint64: fallthrough
         case .typeInt32: fallthrough

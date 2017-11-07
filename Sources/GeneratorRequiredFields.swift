@@ -94,16 +94,16 @@ final class GeneratorRequiredFields: DescriptorGenerator<Google.Protobuf.FieldDe
     
     func dynamicTypes() -> String {
         switch self.descriptor.type {
-        case .typeDouble: return "dynamic var"
-        case .typeFloat:  return "dynamic var"
-        case .typeBool: return "dynamic var"
-        case .typeString: return "dynamic var"
+        case .typeDouble: return "@objc dynamic var"
+        case .typeFloat:  return "@objc dynamic var"
+        case .typeBool: return "@objc dynamic var"
+        case .typeString: return "@objc dynamic var"
             
         case .typeGroup: fallthrough
         case .typeEnum: fallthrough
-        case .typeMessage: return "dynamic var"
+        case .typeMessage: return "@objc dynamic var"
             
-        case .typeBytes: return "dynamic var"
+        case .typeBytes: return "@objc dynamic var"
         case .typeInt64: fallthrough
         case .typeUint64: fallthrough
         case .typeInt32: fallthrough
@@ -113,7 +113,7 @@ final class GeneratorRequiredFields: DescriptorGenerator<Google.Protobuf.FieldDe
         case .typeSfixed32: fallthrough
         case .typeSfixed64: fallthrough
         case .typeSint32: fallthrough
-        case .typeSint64: return "dynamic var"
+        case .typeSint64: return "@objc dynamic var"
         }
     }
     

@@ -23,6 +23,7 @@ final class GeneratorFile:DescriptorGenerator<Google.Protobuf.FileDescriptorProt
         self.writer.write("import Foundation")
         self.writer.write("import ProtocolBuffers")
         self.writer.write("import RealmSwift")
+        self.writer.write("import ProtocolBuffersRealm")
         self.writer.write()
         self.descriptor.messageType.forEach({
             let generator = GeneratorMessage(file: self, descriptor: $0, writer: self.writer)
