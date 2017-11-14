@@ -48,7 +48,6 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
             GeneratorMessage.generatePrimaryKey(self.writer, property: primaryKey)
             
             if IsMapEntry(self.descriptor) {
-                self.generateMapPrimaryKey()
                 self.generateMapIndexedProperty()
             }
             self.writer.outdent()
@@ -163,10 +162,6 @@ final class GeneratorMessage: ThreeDescriptorGenerator<Google.Protobuf.Descripto
     
     func aliasName() -> String {
         return self.descriptor.name.capitalizedCamelCase().components(separatedBy: ".").last!
-    }
-    
-    func generateMapPrimaryKey() {
-        GeneratorMessage.generatePrimaryKey(self.writer, property: "key")
     }
     
     func generateMapIndexedProperty() {
