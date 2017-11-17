@@ -72,7 +72,7 @@ final class GeneratorRequiredFields: DescriptorGenerator<Google.Protobuf.FieldDe
         }
         let check = needGenerateCheckType()
         if check {
-            self.writer.write("if let cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = try? self.\(self.descriptor.name.camelCase())?.protobuf(), let  value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) {")
+            self.writer.write("if let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = try self.\(self.descriptor.name.camelCase())?.protobuf() {")
             self.writer.indent()
         }
         self.writer.write(generateRequiredExtensions())
@@ -120,14 +120,13 @@ final class GeneratorRequiredFields: DescriptorGenerator<Google.Protobuf.FieldDe
     
     func typesCasting() -> String {
         switch self.descriptor.type {
+        case .typeGroup: fallthrough
+        case .typeMessage: fallthrough
+        case .typeEnum: return self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR) + "?"
         case .typeDouble: return "Double"
         case .typeFloat:  return "Float"
         case .typeBool: return "Bool"
         case .typeString: return "String"
-            
-        case .typeGroup: fallthrough
-        case .typeMessage: fallthrough
-        case .typeEnum: return self.descriptor.typeName.capitalizedCamelCase(separator: STATIC_SEPARATOR) + "?"
         case .typeBytes: return "Data"
         case .typeInt64: return "Int"
         case .typeUint64: return "Int"

@@ -152,7 +152,7 @@ final class GeneratorOneOfFields: DescriptorGenerator<Google.Protobuf.FieldDescr
         if self.typesTry() == "" {
             self.writer.write("if let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()) {")
         } else {
-            self.writer.write("if let cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = \(self.typesTry()) self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()), let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) {")
+            self.writer.write("if let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = \(self.typesTry()) self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()) {")
         }
         self.writer.indent()
         self.writer.write(extensionToRealm())
@@ -233,7 +233,7 @@ final class GeneratorOneOfFields: DescriptorGenerator<Google.Protobuf.FieldDescr
             
         case .typeGroup: fallthrough
         case .typeEnum: fallthrough
-        case .typeMessage: return "try?"
+        case .typeMessage: return "try"
             
         case .typeBytes: return ""
         case .typeInt64: fallthrough

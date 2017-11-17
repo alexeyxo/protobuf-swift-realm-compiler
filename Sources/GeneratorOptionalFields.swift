@@ -20,13 +20,13 @@ final class GeneratorOptionalFields: DescriptorGenerator<Google.Protobuf.FieldDe
     func generateExtensions() {
         func nilPointerGenerate() -> String {
             switch self.descriptor.type {
-            case .typeString:
-                return "rmModel.\(self.descriptor.name.camelCase()) = nil"
             case .typeGroup: fallthrough
             case .typeEnum: fallthrough
             case .typeMessage:
                 return "rmModel.\(self.descriptor.name.camelCase()) = nil"
             case .typeBytes:
+                return "rmModel.\(self.descriptor.name.camelCase()) = nil"
+            case .typeString:
                 return "rmModel.\(self.descriptor.name.camelCase()) = nil"
             case .typeDouble: fallthrough
             case .typeFloat:  fallthrough
@@ -151,7 +151,7 @@ final class GeneratorOptionalFields: DescriptorGenerator<Google.Protobuf.FieldDe
         if self.typesTry() == "" {
             self.writer.write("if let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()) {")
         } else {
-            self.writer.write("if let cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = \(self.typesTry()) self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()), let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = cast\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) {")
+            self.writer.write("if let value\(self.descriptor.name.oldUnderscoreCapitalizedCamelCase()) = \(self.typesTry()) self.\(self.descriptor.name.camelCase())\(self.typesCastingCheckValue()) {")
         }
         self.writer.indent()
         self.writer.write(extensionToRealm())
@@ -232,7 +232,7 @@ final class GeneratorOptionalFields: DescriptorGenerator<Google.Protobuf.FieldDe
             
         case .typeGroup: fallthrough
         case .typeEnum: fallthrough
-        case .typeMessage: return "try?"
+        case .typeMessage: return "try"
             
         case .typeBytes: return ""
         case .typeInt64: fallthrough
