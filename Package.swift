@@ -12,7 +12,7 @@ let package = Package(
             targets: ["protoc-gen-swift_realm"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/alexeyxo/protobuf-swift-generator-utils.git", from: "1.1.3"),
+        .package(url: "https://github.com/alexeyxo/protobuf-swift-generator-utils.git", from: "1.1.4"),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
